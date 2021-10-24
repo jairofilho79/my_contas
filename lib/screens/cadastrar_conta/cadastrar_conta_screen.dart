@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:my_contas/models/conta.dart';
+import 'package:my_contas/services/conta_service.dart';
 
 class CadastrarContaScreen extends StatelessWidget {
   final _tituloController = TextEditingController();
   final _saldoController = TextEditingController();
+  ContaService cs = ContaService();
 
   CadastrarContaScreen({Key? key}) : super(key: key);
 
@@ -39,7 +42,11 @@ class CadastrarContaScreen extends StatelessWidget {
                               MaterialStateProperty.all<Color>(Colors.blue)),
                       child: const Text('Cadastrar'),
                       onPressed: () {
-                        print(_saldoController.text);
+                        Conta newConta = Conta(
+                          titulo: _tituloController.text,
+                          saldo: double.tryParse(_saldoController.text) ?? 0,
+                        );
+                        cs.addConta(newConta);
                       },
                     ),
                   ),
