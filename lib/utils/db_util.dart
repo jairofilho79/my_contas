@@ -28,11 +28,11 @@ class DbUtil {
     Map<String, dynamic> dados,
   ) async {
     final db = await DbUtil.database();
-    print(await db.insert(
+    await db.insert(
       table,
       dados,
       conflictAlgorithm: sql.ConflictAlgorithm.replace,
-    ));
+    );
   }
 
   static Future<List<Map<String, dynamic>>> getData(String table) async {
