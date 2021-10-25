@@ -18,7 +18,7 @@ class DbUtil {
         CREATE TABLE conta (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           titulo VARCHAR(50) NOT NULL,
-          saldo REAL NOT NULL,
+          saldo REAL NOT NULL
         );
       """);
   }
