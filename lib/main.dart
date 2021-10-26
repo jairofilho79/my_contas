@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_contas/screens/cadastrar_conta/cadastrar_conta_screen.dart';
+import 'package:my_contas/screens/home/home_screen.dart';
 
 void main() => runApp(const Main());
 
@@ -8,9 +8,9 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CadastrarContaScreen(),
+      home: HomeScreen(),
     );
   }
 }
