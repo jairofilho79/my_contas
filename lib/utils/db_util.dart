@@ -21,6 +21,19 @@ class DbUtil {
           saldo REAL NOT NULL
         );
       """);
+
+    db.execute("""
+        CREATE TABLE transacao (
+          id INTEGER PRIMARY KEY AUTOINCREMENT,
+          tipo INTEGER NOT NULL,
+          descricao VARCHAR(50) NOT NULL,
+          data DATETIME NOT NULL,
+          valor REAL NOT NULL,
+          conta INTEGER NOT NULL,
+          titulo VARCHAR(50) NOT NULL,
+          FOREIGN KEY (conta) REFERENCES conta (id)
+        );
+      """);
   }
 
   static Future<void> insertData(
