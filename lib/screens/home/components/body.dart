@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:my_contas/screens/home/components/card_conta.dart';
 import 'package:my_contas/services/conta_service.dart';
+import 'package:my_contas/services/transacao_service.dart';
+
+import 'card_transacao.dart';
 
 class Body extends StatefulWidget {
   const Body({Key? key}) : super(key: key);
@@ -11,12 +14,16 @@ class Body extends StatefulWidget {
 
 class _BodyState extends State<Body> {
   ContaService cs = ContaService();
+  TransacaoService ts = TransacaoService();
   late Future<List> _loadContas;
+  late Future<List> _loadTransacoes;
   late List _contas;
+  late List _transacoes;
 
   @override
   void initState() {
     _loadContas = _getContas();
+    _loadTransacoes = _getTransacoes();
     super.initState();
   }
 
@@ -50,7 +57,57 @@ class _BodyState extends State<Body> {
                 }
               },
             ),
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(24, 32, 24, 16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'Últimas Transações',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.black,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {},
+                  child: const Text(
+                    'Ver Todas',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.blue,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          FutureBuilder(
+            future: _loadTransacoes,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                _transacoes = snapshot.data as List;
+                return Expanded(
+                  child: ListView.builder(
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: _transacoes.length,
+                    padding: const EdgeInsets.all(10),
+                    itemBuilder: (context, index) {
+                      return cardTransacao(context, index, _transacoes[index]);
+                    },
+                  ),
+                );
+              } else {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+            },
+          ),
         ],
       ),
     );
@@ -58,5 +115,9 @@ class _BodyState extends State<Body> {
 
   Future<List> _getContas() async {
     return await cs.getAllContas();
+  }
+
+  Future<List> _getTransacoes() async {
+    return await ts.getAllTransacoes();
   }
 }
