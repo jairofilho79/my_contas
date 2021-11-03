@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:my_contas/models/conta.dart';
+import 'package:my_contas/screens/home/home_screen.dart';
 import 'package:my_contas/services/conta_service.dart';
 
 class CadastrarContaScreen extends StatelessWidget {
   final _tituloController = TextEditingController();
   final _saldoController = TextEditingController();
-  ContaService cs = ContaService();
+  final ContaService cs = ContaService();
 
   CadastrarContaScreen({Key? key}) : super(key: key);
 
@@ -47,6 +48,11 @@ class CadastrarContaScreen extends StatelessWidget {
                           saldo: double.tryParse(_saldoController.text) ?? 0,
                         );
                         cs.addConta(newConta);
+                        Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(
+                            builder: (_) => const HomeScreen(),
+                          ),
+                        );
                       },
                     ),
                   ),
