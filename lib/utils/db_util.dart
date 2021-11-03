@@ -26,7 +26,7 @@ class DbUtil {
         CREATE TABLE transacao (
           id INTEGER PRIMARY KEY AUTOINCREMENT,
           tipo INTEGER NOT NULL,
-          descricao VARCHAR(50) NOT NULL,
+          descricao VARCHAR(50),
           data DATETIME NOT NULL,
           valor REAL NOT NULL,
           conta INTEGER NOT NULL,

@@ -1,7 +1,10 @@
 import 'package:date_format/date_format.dart';
 import 'package:flutter/material.dart';
 import 'package:my_contas/models/conta.dart';
+import 'package:my_contas/models/transacao.dart';
+import 'package:my_contas/screens/home/home_screen.dart';
 import 'package:my_contas/services/conta_service.dart';
+import 'package:my_contas/services/transacao_service.dart';
 
 class CadastrarTransacaoScreen extends StatefulWidget {
   final int tipoTransacao;
@@ -23,6 +26,7 @@ class _CadastrarTransacaoScreenState extends State<CadastrarTransacaoScreen> {
   late Future<List> _loadContas;
   late List<Conta> _contas;
   DateTime selectedDate = DateTime.now();
+  TransacaoService ts = TransacaoService();
 
   @override
   void initState() {
@@ -34,8 +38,12 @@ class _CadastrarTransacaoScreenState extends State<CadastrarTransacaoScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Cadastro de transação'),
-        backgroundColor: widget.tipoTransacao == 1 ? Colors.blue : Colors.red,
+        title: Text(
+          widget.tipoTransacao == 1
+              ? 'Cadastro de Entrada'
+              : 'Cadastro de Saída',
+        ),
+        backgroundColor: widget.tipoTransacao == 1 ? Colors.green : Colors.red,
       ),
       body: FutureBuilder(
         future: _loadContas,
@@ -82,9 +90,11 @@ class _CadastrarTransacaoScreenState extends State<CadastrarTransacaoScreen> {
                       DropdownButtonFormField(
                         value: _contaSelecionada,
                         onChanged: (Conta? conta) {
-                          setState(() {
-                            _contaSelecionada = conta;
-                          });
+                          if (conta != null) {
+                            setState(() {
+                              _contaSelecionada = conta;
+                            });
+                          }
                         },
                         items: _contas.map((conta) {
                           return DropdownMenuItem<Conta>(
@@ -94,11 +104,26 @@ class _CadastrarTransacaoScreenState extends State<CadastrarTransacaoScreen> {
                         }).toList(),
                       ),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Transacao newTransacao = Transacao(
+                            titulo: _tituloController.text,
+                            descricao: _descricaoController.text,
+                            tipo: widget.tipoTransacao,
+                            valor: double.tryParse(_valorController.text) ?? 0,
+                            data: selectedDate.toString(),
+                            conta: _contaSelecionada!.id ?? 0,
+                          );
+                          ts.addTransacao(newTransacao);
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (_) => const HomeScreen(),
+                            ),
+                          );
+                        },
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(
                             widget.tipoTransacao == 1
-                                ? Colors.blue
+                                ? Colors.green
                                 : Colors.red,
                           ),
                         ),
