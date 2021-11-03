@@ -1,5 +1,6 @@
 class Transacao {
-  late int id, tipo, conta;
+  int? id;
+  late int tipo, conta;
   late String titulo, descricao, data;
   late double valor;
 
@@ -14,7 +15,7 @@ class Transacao {
   }
 
   Transacao({
-    required this.id,
+    this.id,
     required this.tipo,
     required this.conta,
     required this.titulo,
