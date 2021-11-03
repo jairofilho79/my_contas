@@ -11,13 +11,9 @@ class Main extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: CadastrarTransacaoScreen(
-        tipoTransacao: 1,
-      ),
-      // home: CadastrarContaScreen(),
-      // home: HomeScreen(),
+      home: HomeScreen(),
     );
   }
 }
